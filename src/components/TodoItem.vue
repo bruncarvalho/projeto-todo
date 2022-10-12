@@ -4,7 +4,14 @@
 border-gray-400 last:border-b-0">
         <div class="flex items-center justify-center 
 mr-2">
-            <button class="text-gray-400">
+            <button 
+            :class="{
+            'text-green-600': isCompleted,
+            'text-gray-400': !isCompleted,
+          }"
+          @click="onCheckClick"
+          >
+          
                 <svg class="w-5 h-5" fill="none" 
 stroke="currentColor" viewBox="0 0 24 24" 
 xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" 
@@ -20,7 +27,10 @@ stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 class="bg-gray-300 placeholder-gray-500 
 text-gray-700 font-light focus:outline-none block w-full appearance-none 
 leading-normal mr-3"
-            >
+        onTitleChange($evt){
+                @keyup.enter="onTitleChange"            
+
+>
         </div>
 
         <div class="ml-auto flex items-center 
@@ -56,6 +66,33 @@ export default {
         todo: {
             type: Object,
             default: () => ({}),
+        }
+    },
+
+    data(){
+        return {
+            isCompleted: this.todo.completed,
+        }
+    },
+    methods: {
+        onTitleChange($evt){
+            const newTitle = $evt.target.value;
+
+            if (!newTitle) {
+            return}
+
+            const payload = {
+                id: this.todo.id,
+                data: {
+                    title: newTitle,
+                    completed: this.isComplited
+                }
+            }
+            this.$store.dispatch('updateTodo', payload)
+        },
+        onCheckClick(){
+            this.isCompleted = !this.isCompleted
+            this.updateTodo()
         }
     }
 }
