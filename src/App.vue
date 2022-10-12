@@ -1,26 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+ 
+  <div class="px-3 py-10 md:px-10">
+    <div class="w-full sm:w-1/2 lg:w-1/3 mx-auto">
+
+      <TodoSpinner v-if="loading"/>
+
+      <template v-else>
+      <TodoFormAdd/>
+      <TodoItems/>
+      <TodoEmpty/>
+
+    </template>
+        
+    </div>
+</div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import TodoSpinner from '@/components/TodoSpinner';
+import TodoFormAdd from '@/components/TodoFormAdd';
+import TodoItems from '@/components/TodoItems';
+import TodoEmpty from '@/components/TodoEmpty';
+import axios from 'axios';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  
+  components: {TodoSpinner, TodoFormAdd, TodoItems, TodoEmpty},
+  
+  data() {
+    return {
+      loading: false
+    }
+  },
+   created() {
+    axios.get('http://localhost:3000/todos')
+    .then((response) => {
+      this.$store.commit('storeTodos', response.data)
+    })
+    .finally(()=> {
+      this.loading = false
+    })
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
