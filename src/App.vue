@@ -7,8 +7,8 @@
 
       <template v-else>
       <TodoFormAdd/>
-      <TodoItems/>
-      <TodoEmpty/>
+      <TodoItems v-if="$store.state.todos.length"/>
+      <TodoEmpty v-else/>
 
     </template>
         
