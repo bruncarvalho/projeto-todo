@@ -24,26 +24,33 @@ focus:outline-none"
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
 export default {
-    data () {
-        return {
-            title: ''
-        }
-    },
-    methods: {
-        addTodo() {
-            if(!this.title) {
+    setup(){
+        const title = ref('')
+        const store = useStore()
+        const addTodo = () =>{
+            if(!title.value) {
                 return;
             }
-            this.$store.dispatch('addTodo',{
-                title: this.title,
+            store.dispatch('addTodo',{
+                title: title.value,
                 completed: false
             }).finally(() => {
-                this.title = ''
+                title.value = ''
             })
-           
-
         }
+
+        return {
+            title,
+            addTodo
+        }
+    },
+    
+    methods: {
+        
     }
 }
 </script>
