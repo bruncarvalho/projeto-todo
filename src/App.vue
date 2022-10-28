@@ -1,41 +1,22 @@
 <template>
-    <div class="px-3 py-10 md:px-10">
-        <div class="w-full sm:w-1/2 lg:w-1/3 mx-auto">
-            <TodoSpinner v-if="loading" />
+    <div>
 
-            <template v-else>
-                <TodoFormAdd />
+        <Todo v-if="$store.state.user.id"/>
 
-                <TodoItems
-                    v-if="$store.state.todos.length"
-                />
+        <LoginPage v-else/>
 
-                <TodoEmpty v-else />
-            </template>
-        </div>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useStore } from 'vuex'
-import TodoSpinner from '@/components/TodoSpinner';
-import TodoFormAdd from '@/components/TodoFormAdd';
-import TodoItems from '@/components/TodoItems';
-import TodoEmpty from '@/components/TodoEmpty';
+
+import Todo from '@/components/Todo';
+import LoginPage from '@/components/LoginPage'
+
+
 export default {
     name: 'App',
-    components: { TodoEmpty, TodoItems, TodoFormAdd, TodoSpinner },
-    setup() {
-        const loading = ref(false);
-        const store = useStore()
-        loading.value = true
-        store.dispatch('getTodos').finally(() => {
-            loading.value = false
-        })
-        return {
-            loading,
-        }
-    },
+    components: { Todo, LoginPage },
+    
 }
 </script>
