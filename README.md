@@ -29,3 +29,4 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 json-server --watch database.json (dentro de api)
+# login_vue
