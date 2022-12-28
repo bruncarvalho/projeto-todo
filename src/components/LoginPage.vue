@@ -1,13 +1,27 @@
 <template>
   <form  @submit.stop.prevent="login" class="mx-40 mt-20">
-    <div class="bg-gray-300 rounded">
+    <div class="bg-gray-300 rounded w-1/4 ">
 
       <div class="flex items-center px-4 py-3">
         <div class="w-full">
           <input 
             v-model="userName"
             type="text" 
-            placeholder="Digite seu usuário do GitHub" 
+            placeholder="Digite seu usuário" 
+            class="bg-gray-300 placeholder-gray-500 text-gray-800 font-light focus:outline-none block w-full appearance-none leading-normal mr-3"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-300 rounded w-1/4 mt-4">
+
+      <div class="flex items-center px-4 py-3">
+        <div class="w-full">
+          <input 
+            v-model="userPassword"
+            type="password" 
+            placeholder="Digite sua senha" 
             class="bg-gray-300 placeholder-gray-500 text-gray-800 font-light focus:outline-none block w-full appearance-none leading-normal mr-3"
           >
         </div>
@@ -18,7 +32,6 @@
           </button>
         </div>
       </div>
-
     </div>
   </form>
 </template>
@@ -30,6 +43,7 @@ import {useStore} from 'vuex';
 export default {
   setup() {
     const userName = ref('')
+    const userPassword = ref('')
 
     const store = useStore()
 
@@ -40,14 +54,20 @@ export default {
          return;
       }
 
+      if(!userPassword.value) {
+        alert('Digite sua senha')
+         return;
+      }
+
       // despachar a ação de login para o store
-      store.dispatch('loginGit', userName.value)
+      store.dispatch('loginApi', {username: userName.value, password: userPassword.value})
 
       // retornar o userName e o login
     }
 
     return {
       userName,
+      userPassword,
       login
     }
   }

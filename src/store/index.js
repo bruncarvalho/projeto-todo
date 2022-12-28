@@ -33,22 +33,40 @@ export default createStore({
     }
   },
   actions: {
-    async loginGit({ commit }, userName) {
-      //Fazer o get para buscar informações do usuário
-      const response = await axios.get(
-        `https://api.github.com/users/${userName}`
-      )
+    async loginApi({ commit }, {username, password}) {
 
-      //montar o usuário com as informações recebidas
-      const newUser = {
-        id: response.data.id,
-        name: response.data.name,
-        avatar: response.data.avatar_url,
-        bio: response.data.bio
+      //buscar na api todos os usuarios;
+      const response = await axios.get('http://site2.com/api/v1/user');
+
+      const users = response.data.data;
+      console.log(username)
+      console.log(password);
+
+      const user = users.find(user => user.username === username);
+
+      if (user) {
+        commit('storeUser', user)
+      } else {
+        console.log('Informações inválidas!')
       }
 
-      //fazer o commit para alterar o state.use
-      commit('storeUser', newUser)
+
+
+      // //Fazer o get para buscar informações do usuário
+      // const response = await axios.get(
+      //   `https://api.github.com/users/${userName}`
+      // )
+
+      // //montar o usuário com as informações recebidas
+      // const newUser = {
+      //   id: response.data.id,
+      //   name: response.data.name,
+      //   avatar: response.data.avatar_url,
+      //   bio: response.data.bio
+      // }
+
+      // //fazer o commit para alterar o state.use
+      // commit('storeUser', newUser)
     },
 
     getTodos({ commit }) {
